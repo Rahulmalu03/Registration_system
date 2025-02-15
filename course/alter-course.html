@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update or Delete Course</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea {
+            width: 95%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            height: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 9px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+        }
+        button.delete {
+            background: linear-gradient(45deg, #ff3e3e, #d62424);
+        }
+        button.delete:hover {
+            background: linear-gradient(45deg, #d62424, #ff3e3e);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update or Delete Course</h1>
+        <form id="updateForm">
+            <h2>Update Course</h2>
+            <label for="courseId">Course ID:</label>
+            <input type="text" id="courseId" name="courseId" placeholder="Enter Course ID" required>
+            <label for="courseName">Course Name:</label>
+            <input type="text" id="courseName" name="courseName" placeholder="Enter Course Name" required>
+            <label for="description">Description:</label>
+            <input id="description" name="description" placeholder="Enter Course Description" required>
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" name="duration" placeholder="Enter Course Duration" required>
+            <button type="submit">Update Course</button>
+        </form>
+        <form id="deleteForm">
+            <h2>Delete Course</h2>
+            <label for="deleteCourseId">Course ID:</label>
+            <input type="text" id="deleteCourseId" name="deleteCourseId" placeholder="Enter Course ID" required>
+            <button type="submit" class="delete">Delete Course</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const courseId = document.getElementById('courseId').value;
+            const courseName = document.getElementById('courseName').value;
+            const description = document.getElementById('description').value;
+            const duration = document.getElementById('duration').value;
+            const response = await fetch('/update-course', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courseId, courseName, description, duration }),
+            });
+            const result = await response.json();
+            alert(result.message);
+            if (result.redirect) {
+                window.location.href = '/';
+            }
+        });
+        document.getElementById('deleteForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const deleteCourseId = document.getElementById('deleteCourseId').value;
+            const response = await fetch('/delete-course', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courseId: deleteCourseId }),
+            });
+            const result = await response.json();
+            alert(result.message);
+            if (result.redirect) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Input Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: linear-gradient(to bottom right, #18181b, #11182780);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        h2 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #3fa9f5;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+        }
+        @media (max-width: 600px) {
+            body {
+                height: auto;
+                padding: 10px;
+            }
+            .form-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Course Input Form</h2>
+        <form id="courseForm">
+            <div class="form-group">
+                <label for="courseName">Course Name</label>
+                <input type="text" id="courseName" name="courseName" placeholder="Enter Course Name" required>
+            </div>
+            <div class="form-group">
+                <label for="courseDescription">Course Description</label>
+                <textarea id="courseDescription" name="courseDescription" placeholder="Enter Course Description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="courseDuration">Course Duration</label>
+                <input type="text" id="courseDuration" name="courseDuration" placeholder="Enter Course Duration (e.g., 6 weeks)" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('courseForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const courseName = document.getElementById('courseName').value;
+            const courseDescription = document.getElementById('courseDescription').value;
+            const courseDuration = document.getElementById('courseDuration').value;
+
+            const response = await fetch('/add-course', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courseName, courseDescription, courseDuration }),
+            });
+            const result = await response.json();
+            alert(result.message);
+            if (result.redirect) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

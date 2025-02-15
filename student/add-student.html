@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('assects/img4.webp');
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            background-image: linear-gradient(to right,  #74ebd5, #ACB6E5); /* Gradient colors */
+            -webkit-background-clip: text; /*Apply gradient to text */
+            color: transparent; /* Make text color transparent to show gradient */
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .gradient-custom-3 {
+            background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
+            width: 100%;
+            height: 100%;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+    </style>
+    <script>
+        // JavaScript to validate marks input before form submission
+        function validateForm() {
+            var marks = parseFloat(document.getElementById("marks").value);
+            if (marks < 0.00 || marks > 10.00) {
+                alert("Marks should be between 0 and 10.");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
+</head>
+<body>
+    <div class="gradient-custom-3">
+        <div class="container">
+            <h1>Enter Student Information</h1>
+            <form action="/add-students" method="POST" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <input type="text" id="student-name" name="student-name" placeholder="Student Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="class" name="class" placeholder="Class" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="marks" name="marks" step="0.01" min="0" max="10" placeholder="Marks (e.g., 9.75)" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

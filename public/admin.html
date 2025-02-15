@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Choice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ed44e4, #8b46f3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+        .add-student {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.1);
+            border: 4px solid;
+            border-image: linear-gradient(to right, #ed44e4, #8b46f3) 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .add-student button {
+            background: linear-gradient(45deg, #8b46f3, #ed44e4);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+        .add-student button:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .add-student button:active {
+            transform: translateY(0);
+            background: linear-gradient(45deg, #1e4db7, #1b69a9);
+        }
+        .add-student a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="add-student">
+        <form action="/add-student" method="GET">
+            <button class="add-students" id="add-students">ADD STUDENTS</button>
+        </form>
+        <form action="/alter-student" method="GET">
+            <button class="alter-student" id="alter-student">ALTER STUDENTS</button>
+        </form>
+        <form action="/display-std" method="GET">
+            <button class="display-std" id="display-std">DISPLAY STUDENTS</button>
+        </form>
+        <form action="/add-course" method="GET">
+            <button class="add-course" id="add-course">ADD COURSES</button>
+        </form>
+        <form action="/alter-course" method="GET">
+            <button class="alter-course" id="alter-course">ALTER COURSES</button>
+        </form>
+        <form action="/display-cou" method="GET">
+            <button class="display-cou" id="display-cou">DISPLAY COURSES</button>
+        </form>
+        
+    </div>
+</body>
+</html>

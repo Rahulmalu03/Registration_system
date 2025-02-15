@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            position: relative; /* Added for positioning buttons */
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #6a11cb;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .pagination button {
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            background: linear-gradient(45deg, #00c853, #009624);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 20%;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #009624, #007b3e);
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .button-container button {
+            background: linear-gradient(45deg, #009624, #007b3e);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .button-container button:hover {
+            background  : linear-gradient(to left, #2575fc, #6a11cb);
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <form action="/add-course" method="GET">
+            <button class="add-course" id="add-course" style="width: 100%;">ADD COURSES</button>
+        </form>
+        <br>
+        <form action="/alter-course" method="GET">
+            <button class="alter-course" id="alter-course" style="width: 100%;">ALTER COURSES</button>
+        </form>
+    </div>
+    <div class="container">
+        <h1>Course Selection</h1>
+        <table id="courseTable">
+            <thead>
+                <tr>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Course Description</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be dynamically populated -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevBtn" disabled>Previous</button>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let courses = []; // To store fetched courses
+        const rowsPerPage = 5;
+        let currentPage = 1;
+
+        // Fetch courses from the backend
+        async function fetchCourses() {
+            const response = await fetch('/courses');
+            courses = await response.json();
+            displayPage(currentPage);
+        }
+
+        // Display courses for the current page
+        function displayPage(page) {
+            const tableBody = document.querySelector('#courseTable tbody');
+            tableBody.innerHTML = '';
+
+            const startIndex = (page - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, courses.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const course = courses[i];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.id}</td>
+                    <td>${course.name}</td>
+                    <td>${course.description}</td>
+                    <td>${course.duration}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            updatePaginationButtons();
+        }
+
+        // Update pagination buttons
+        function updatePaginationButtons() {
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage * rowsPerPage >= courses.length;
+        }
+
+        // Event listeners for pagination buttons
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPage(currentPage);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentPage * rowsPerPage < courses.length) {
+                currentPage++;
+                displayPage(currentPage);
+            }
+        });
+
+        // Initial fetch and render
+        document.addEventListener('DOMContentLoaded', fetchCourses);
+    </script>
+</body>
+</html>
